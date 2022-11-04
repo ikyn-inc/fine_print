@@ -4,15 +4,16 @@ module FinePrint
   class ApplicationController < ::ActionController::Base
     respond_to :html
 
+    FinePrint.config.concerns.each do |concern|
+      include concern.to_s.capitalize.constantize
+    end
+
+
     before_action :get_user, :can_manage
 
     layout FinePrint.config.layout
 
     helper FinePrint.config.helpers
-
-    FinePrint.config.concerns.each do |concern|
-      include concern
-    end
 
     protected
 
