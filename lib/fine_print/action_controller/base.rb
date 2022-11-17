@@ -6,6 +6,10 @@ module FinePrint
         base.extend(ClassMethods)
       end
 
+      # FIXME: this can be rewritten to be smarter about what needs to execute and when.
+      #   For example, the fp_opts aren't used until late in the method, after 2 early exists.
+      #   Contract_name is also not used before at least 1 early exit and the main query
+      #   FinePrint::Contract.all .. is doing stuff in ruby rather than the DB!
       # Accepts an array of contract names and an options hash
       # Checks if the current user has signed the given contracts
       # and calls fine_print_redirect if not
@@ -65,6 +69,8 @@ module FinePrint
         @fine_print_skipped_contract_names ||= []
       end
 
+      # FIXME: this code needs a big cleanup -- flatmap vs. flatten.collect...
+      #   Also, the same query problem from above is here too.
       module ClassMethods
         # Accepts an array of contract names and an options hash
         # Adds a before_action to the current controller that will check if the

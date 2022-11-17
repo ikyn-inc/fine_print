@@ -14,6 +14,8 @@ module FinePrint
     yield config
   end
 
+  # FIXME: we need a version of this that doesn't return the query results, but rather the
+  #   AR query object so we can chain off of it to turn multiple queries into 1
   # Gets a contract, given either the contract object, ID or name
   # If given a name, returns the latest published version of that contract
   #   - contract - can be a Contract object, its ID, or its name
@@ -54,6 +56,7 @@ module FinePrint
     end
   end
 
+  # FIXME: this should be 1 query instead of 2
   # Returns true iff the given user has signed the given contract
   #   - user - the user in question
   #   - contract - can be a Contract object, its ID, or its name (String/Symbol)
@@ -65,6 +68,7 @@ module FinePrint
     contract.signed_by?(user)
   end
 
+  # FIXME: this should be 1 query instead of 2
   # Returns true iff the given user has signed any version of the given contract
   #   - user - the user in question
   #   - contract - can be a Contract object, its ID, or its name (String/Symbol)
@@ -92,6 +96,8 @@ module FinePrint
     latest_published_contracts(conditions).signed_by(user)
   end
 
+  # FIXME: this is just plain dumb!
+  #   Let's fix this to be 1 query instead of 2 followed by array subtraction
   # Returns all contracts matching the given conditions
   # whose latest published version the user has not signed.
   #   - user - the user in question
